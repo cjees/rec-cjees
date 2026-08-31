@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>2027학년도 신입생<br> 및 전입생 모집</title>
+  <title>2027학년도 신입생 및 전입생 모집</title>
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
@@ -614,7 +614,6 @@
   function selectGrade(val) {
     formData.grade = val;
     const btns = document.querySelectorAll('.grade-btn');
-    // 중복 선택 꼬임 방지를 위해 정확한 학년 문구로 시작하는지 검사
     btns.forEach(b => b.classList.toggle('selected', b.innerText.startsWith(val + '학년')));
     setTimeout(() => nextStep(), 200);
   }
@@ -629,7 +628,6 @@
   function selectAttendance(val) {
     formData.attendance = val;
     const btns = document.querySelectorAll('.attend-btn');
-    // 완벽한 단어 일치를 위해 trim 적용
     btns.forEach(b => b.classList.toggle('selected', b.innerText.trim() === val));
     setTimeout(() => nextStep(), 200); 
   }
@@ -649,7 +647,22 @@
     wrap.style.display = 'block'; 
     new daum.Postcode({
       oncomplete: function(data) {
-        document.getElementById('address-basic').value = data.address;
+        let fullAddress = data.address;
+        let extraAddress = '';
+        
+        let extraList = [];
+        if (data.bname !== '') {
+          extraList.push(data.bname);
+        }
+        if (data.buildingName !== '') {
+          extraList.push(data.buildingName);
+        }
+        
+        if (extraList.length > 0) {
+          extraAddress = ' (' + extraList.join(', ') + ')';
+        }
+        
+        document.getElementById('address-basic').value = fullAddress + extraAddress;
         wrap.style.display = 'none';
         document.getElementById('address-detail').focus();
       },
