@@ -309,16 +309,23 @@
 	※잘못된 학년을 선택하실 경우 접수 번호가 변경될 수 있습니다.<br>
       </div>
       <div class="btn-col-group">
-        <button class="btn-col grade-btn" onclick="selectGrade(2)">2027학년도<br>2학년<br>현재기준<br>1학년</button>
-        <button class="btn-col grade-btn" onclick="selectGrade(3)">2027학년도<br>3학년<br>현재기준<br>2학년</button>
-        <button class="btn-col grade-btn" onclick="selectGrade(4)">2027학년도<br>4학년<br>현재기준<br>3학년</button>
-        <button class="btn-col grade-btn" onclick="selectGrade(5)">2027학년도<br>5학년<br>현재기준<br>4학년</button>
-        <button class="btn-col grade-btn" onclick="selectGrade(6)">2027학년도<br>6학년<br>현재기준<br>5학년</button>
+        <button class="btn-col grade-btn" onclick="selectGrade(2)">2학년<br>현재-1학년</button>
+        <button class="btn-col grade-btn" onclick="selectGrade(3)">3학년<br>현재-2학년</button>
+        <button class="btn-col grade-btn" onclick="selectGrade(4)">4학년<br>현재-3학년</button>
+        <button class="btn-col grade-btn" onclick="selectGrade(5)">5학년<br>현재-4학년</button>
+        <button class="btn-col grade-btn" onclick="selectGrade(6)">6학년<br>현재-5학년</button>
       </div>
     </div>
 
     <!-- [4] 성별 선택 -->
     <div class="step" id="step-4">
+      <!-- 신규: 특수교육대상자 전용 안내 문구 (동적 노출) -->
+      <div id="special-edu-warning" style="display: none; background: #fff3f3; border: 2px solid #e74c3c; padding: 15px; border-radius: 12px; margin-bottom: 25px; text-align: left; font-size: 16px; color: #333; line-height: 1.6; word-break: keep-all;">
+        <strong style="color: #c0392b; font-size: 18px;">[특수교육대상자 안내사항]</strong><br>
+        • 본교는 방과후지원비와 치료지원비가 공립학교 지원과 다릅니다.<br>
+        • 특수교육지원인력은 공립학교와 다르게 자원봉사자 없이 1명만 배정되어있습니다.<br>
+        • 기타 문의사항은 원서 접수전 특수교사와 상담 부탁드립니다.
+      </div>
       <div class="question-title">자녀의 성별을 선택해 주세요.</div>
       <div class="btn-group-row">
         <button class="btn-large gender-btn" onclick="selectGender('남')">남자</button>
@@ -514,7 +521,17 @@
   }
 
   function updateUI() {
-    updateDrawInfo(); // 단계 이동 시마다 전형에 맞춰 텍스트 업데이트
+    updateDrawInfo(); 
+    
+    // 신규: 특수교육대상자 안내문구 동적 노출 로직
+    const specialWarning = document.getElementById('special-edu-warning');
+    if (specialWarning) {
+      if (formData.category === '특수교육대상자') {
+        specialWarning.style.display = 'block';
+      } else {
+        specialWarning.style.display = 'none';
+      }
+    }
     
     document.querySelectorAll('.step').forEach((el, idx) => {
       el.classList.toggle('active', idx === currentStep);
