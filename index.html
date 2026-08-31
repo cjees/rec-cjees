@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>2027학년도 신입생 및 전입생 모집</title>
+  <title>2027학년도 신입생<br> 및 전입생 모집</title>
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
@@ -258,7 +258,7 @@
 
 <div class="kiosk-container">
   <div class="header">
-    <h1 id="kiosk-title">2027학년도 신입생 및 전입생 모집</h1>
+    <h1 id="kiosk-title">2027학년도 신입생<br> 및 전입생 모집</h1>
     <div class="progress-bar" id="progress-container" style="display: none;">
       <div class="progress-fill" id="progress-fill"></div>
     </div>
@@ -268,7 +268,7 @@
 
     <div class="step active" id="step-0">
       <div style="text-align: center;">
-        <h2 style="font-size: 26px; color: #333; margin-bottom: 20px; line-height: 1.4;">청주교육대학교부설초등학교에<br>오신 것을 환영합니다!</h2>
+        <h2 style="font-size: 26px; color: #333; margin-bottom: 20px; line-height: 1.4;">청주교육대학교<br>부설초등학교에<br>오신 것을 환영합니다!</h2>
         
         <div style="background: #fff3f3; border: 2px solid #e74c3c; padding: 15px; border-radius: 12px; margin-bottom: 30px; text-align: left; font-size: 15px; color: #333; line-height: 1.6; word-break: keep-all;">
           <strong style="color: #c0392b; font-size: 18px;">[당첨취소에 대한 안내]</strong><br>
@@ -319,7 +319,6 @@
 
     <!-- [4] 성별 선택 -->
     <div class="step" id="step-4">
-      <!-- 신규: 특수교육대상자 전용 안내 문구 (동적 노출) -->
       <div id="special-edu-warning" style="display: none; background: #fff3f3; border: 2px solid #e74c3c; padding: 15px; border-radius: 12px; margin-bottom: 25px; text-align: left; font-size: 16px; color: #333; line-height: 1.6; word-break: keep-all;">
         <strong style="color: #c0392b; font-size: 18px;">[특수교육대상자 안내사항]</strong><br>
         • 본교는 방과후지원비와 치료지원비가 공립학교 지원과 다릅니다.<br>
@@ -377,7 +376,6 @@
     <!-- [10] 추첨 참석 여부 -->
     <div class="step" id="step-10">
       <div class="question-title">추첨일 참석 여부를 선택해 주세요.</div>
-      <!-- 동적 안내 텍스트 영역 -->
       <div id="attend-info-text" style="background: #f0f4f8; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 16px; color: #444; line-height: 1.6; text-align: left; word-break: keep-all;">
       </div>
       <div class="btn-group-row">
@@ -441,7 +439,6 @@
             </tr>
           </table>
 
-          <!-- 동적 안내 텍스트 영역 -->
           <div id="receipt-info-text" style="text-align: left; margin-bottom: 25px; font-size: 14px; color: #333; line-height: 1.6; padding: 12px; border: 1px solid #ccc; background-color: #f9f9f9;">
           </div>
 
@@ -523,7 +520,6 @@
   function updateUI() {
     updateDrawInfo(); 
     
-    // 신규: 특수교육대상자 안내문구 동적 노출 로직
     const specialWarning = document.getElementById('special-edu-warning');
     if (specialWarning) {
       if (formData.category === '특수교육대상자') {
@@ -618,7 +614,8 @@
   function selectGrade(val) {
     formData.grade = val;
     const btns = document.querySelectorAll('.grade-btn');
-    btns.forEach(b => b.classList.toggle('selected', b.innerText.includes(val)));
+    // 중복 선택 꼬임 방지를 위해 정확한 학년 문구로 시작하는지 검사
+    btns.forEach(b => b.classList.toggle('selected', b.innerText.startsWith(val + '학년')));
     setTimeout(() => nextStep(), 200);
   }
 
@@ -632,7 +629,8 @@
   function selectAttendance(val) {
     formData.attendance = val;
     const btns = document.querySelectorAll('.attend-btn');
-    btns.forEach(b => b.classList.toggle('selected', b.innerText.includes(val)));
+    // 완벽한 단어 일치를 위해 trim 적용
+    btns.forEach(b => b.classList.toggle('selected', b.innerText.trim() === val));
     setTimeout(() => nextStep(), 200); 
   }
 
