@@ -370,10 +370,8 @@
     <!-- [10] 추첨 참석 여부 -->
     <div class="step" id="step-10">
       <div class="question-title">추첨일 참석 여부를 선택해 주세요.</div>
-      <div style="background: #f0f4f8; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 16px; color: #444; line-height: 1.6; text-align: left; word-break: keep-all;">
-        <strong style="font-size: 18px; color: #2c3e50;">[추첨 안내]</strong><br>
-        • 일시: 2026년 10월 30일(금) 14시<br>
-        • 장소: 청주교대부설초 본관 2층 세미나실
+      <!-- 동적 안내 텍스트 영역 -->
+      <div id="attend-info-text" style="background: #f0f4f8; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 16px; color: #444; line-height: 1.6; text-align: left; word-break: keep-all;">
       </div>
       <div class="btn-group-row">
         <button class="btn-large attend-btn" onclick="selectAttendance('참석')">참석</button>
@@ -436,10 +434,8 @@
             </tr>
           </table>
 
-          <div style="text-align: left; margin-bottom: 25px; font-size: 14px; color: #333; line-height: 1.6; padding: 12px; border: 1px solid #ccc; background-color: #f9f9f9;">
-            <strong style="color: #2c3e50;">[추첨 안내]</strong><br>
-            • 일시: 2026년 10월 30일(금) 14시<br>
-            • 장소: 청주교대부설초 본관 2층 세미나실
+          <!-- 동적 안내 텍스트 영역 -->
+          <div id="receipt-info-text" style="text-align: left; margin-bottom: 25px; font-size: 14px; color: #333; line-height: 1.6; padding: 12px; border: 1px solid #ccc; background-color: #f9f9f9;">
           </div>
 
           <p style="font-size: 18px; color: #333; font-weight: bold;">청주교육대학교부설초등학교</p>
@@ -492,7 +488,34 @@
 
   const wrap = document.getElementById('address-wrap');
 
+  function updateDrawInfo() {
+    let drawDate = '2026년 10월 30일(금) 14시';
+    let drawPlace = '청주교대부설초 본관 2층 세미나실';
+
+    if (formData.type === '신입생') {
+      if (formData.category === '국가보훈자녀') {
+        drawDate = '2026년 10월 23일(금) 14시';
+        drawPlace = '교무실';
+      } else if (formData.category === '특수교육대상자') {
+        drawDate = '2026년 10월 23일(금) 15시';
+        drawPlace = '교무실';
+      }
+    }
+
+    const attendEl = document.getElementById('attend-info-text');
+    if(attendEl) {
+      attendEl.innerHTML = `<strong style="font-size: 18px; color: #2c3e50;">[추첨 안내]</strong><br>• 일시: ${drawDate}<br>• 장소: ${drawPlace}`;
+    }
+
+    const receiptEl = document.getElementById('receipt-info-text');
+    if(receiptEl) {
+      receiptEl.innerHTML = `<strong style="color: #2c3e50;">[추첨 안내]</strong><br>• 일시: ${drawDate}<br>• 장소: ${drawPlace}`;
+    }
+  }
+
   function updateUI() {
+    updateDrawInfo(); // 단계 이동 시마다 전형에 맞춰 텍스트 업데이트
+    
     document.querySelectorAll('.step').forEach((el, idx) => {
       el.classList.toggle('active', idx === currentStep);
     });
@@ -523,13 +546,11 @@
   }
 
   function nextStep() {
-    // 1단계에서 전입생을 선택하면 2단계(전형)를 건너뛰고 3단계(학년)로 이동
     if (currentStep === 1 && formData.type === '전입생') {
       currentStep = 3; 
       updateUI();
       return;
     }
-    // 2단계(전형)에서 신입생은 3단계(학년)를 건너뛰고 4단계(성별)로 이동
     if (currentStep === 2 && formData.type === '신입생') {
       currentStep = 4; 
       updateUI();
@@ -542,13 +563,11 @@
   }
 
   function prevStep() {
-    // 4단계(성별)에서 이전 클릭 시, 신입생이면 2단계(전형)로 복귀
     if (currentStep === 4 && formData.type === '신입생') {
       currentStep = 2; 
       updateUI();
       return;
     }
-    // 3단계(학년)에서 이전 클릭 시, 전입생은 1단계(지원유형)로 복귀
     if (currentStep === 3 && formData.type === '전입생') {
       currentStep = 1; 
       updateUI();
@@ -679,7 +698,6 @@
     document.getElementById('sum-receipt').innerText = "제출 완료 시 자동 발급"; 
     document.getElementById('sum-type').innerText = formData.type === '신입생' ? '신입생 (1학년)' : `전입생 (${formData.grade}학년)`;
     
-    // 전입생은 요약 화면에서 전형(category) 행을 숨김
     if (formData.type === '전입생') {
       document.getElementById('sum-category-row').style.display = 'none';
     } else {
@@ -711,7 +729,6 @@
       if(data.result === "success") {
         document.getElementById('final-receipt').innerText = data.receiptNo;
         
-        // 접수표 타이틀: 신입생은 전형 표기, 전입생은 전형 표기 생략
         if (formData.type === '신입생') {
           document.getElementById('receipt-subtitle').innerText = `2027학년도 ${formData.type} (${formData.category})`;
         } else {
