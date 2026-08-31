@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>2027학년도 신입생 및 전입생 모집</title>
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <!-- 화면 캡처(저장) 기능을 위한 라이브러리 추가 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     * {
@@ -37,7 +36,7 @@
       padding: 40px 30px;
       position: relative;
       box-shadow: 0 0 20px rgba(0,0,0,0.05);
-      overflow-y: auto; /* 스마트폰 세로 스크롤 허용 */
+      overflow-y: auto; 
     }
 
     .header {
@@ -115,7 +114,8 @@
     .btn-large {
       flex: 1;
       height: 100px;
-      font-size: 24px;
+      font-size: 22px; 
+      line-height: 1.3;
       font-weight: bold;
       border: 2px solid #ccc;
       border-radius: 16px;
@@ -130,12 +130,13 @@
       color: #4A90E2;
     }
 
-    .grid-group {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+    .btn-col-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    .btn-grid {
+    .btn-col {
+      width: 100%;
       height: 70px;
       font-size: 20px;
       font-weight: bold;
@@ -145,7 +146,7 @@
       color: #444;
       cursor: pointer;
     }
-    .btn-grid.selected {
+    .btn-col.selected {
       border-color: #4A90E2;
       background-color: #EBF3FA;
       color: #4A90E2;
@@ -281,29 +282,42 @@
       </div>
     </div>
 
-    <!-- [1] 지원 유형 (신입생 / 전입생) -->
+    <!-- [1] 지원 유형 -->
     <div class="step" id="step-1">
       <div class="question-title">입학 유형을 선택해 주세요.</div>
       <div class="btn-group-row">
-        <button class="btn-large type-btn" onclick="selectType('신입생')">신입생 (1학년)</button>
-        <button class="btn-large type-btn" onclick="selectType('전입생')">전입생 (2~6학년)</button>
+        <button class="btn-large type-btn" onclick="selectType('신입생')">신입생<br>(1학년)</button>
+        <button class="btn-large type-btn" onclick="selectType('전입생')">전입생<br>(2~6학년)</button>
       </div>
     </div>
 
-    <!-- [2] 전입생 학년 선택 -->
+    <!-- [2] 전형 선택 (신입생 전용) -->
     <div class="step" id="step-2">
-      <div class="question-title">전입할 학년을 선택해 주세요.</div>
-      <div class="grid-group">
-        <button class="btn-grid grade-btn" onclick="selectGrade(2)">2학년</button>
-        <button class="btn-grid grade-btn" onclick="selectGrade(3)">3학년</button>
-        <button class="btn-grid grade-btn" onclick="selectGrade(4)">4학년</button>
-        <button class="btn-grid grade-btn" onclick="selectGrade(5)">5학년</button>
-        <button class="btn-grid grade-btn" onclick="selectGrade(6)" style="grid-column: span 2;">6학년</button>
+      <div class="question-title">지원 전형을 선택해 주세요.</div>
+      <div class="btn-col-group">
+        <button class="btn-col category-btn" onclick="selectCategory('일반')">일반 전형</button>
+        <button class="btn-col category-btn" onclick="selectCategory('국가보훈자녀')">국가보훈자녀 전형</button>
+        <button class="btn-col category-btn" onclick="selectCategory('특수교육대상자')">특수교육대상자 전형</button>
       </div>
     </div>
 
-    <!-- [3] 성별 선택 -->
+    <!-- [3] 전입생 학년 선택 (전입생 전용) -->
     <div class="step" id="step-3">
+      <div class="question-title">전입할 학년을 선택해 주세요.</div>
+      <div style="text-align: center; color: #e74c3c; font-size: 17px; font-weight: bold; margin-bottom: 20px; background: #fff3f3; padding: 12px; border-radius: 8px;">
+        [ 2027학년도(내년) 기준의 학년을 선택해주세요. ]
+      </div>
+      <div class="btn-col-group">
+        <button class="btn-col grade-btn" onclick="selectGrade(2)">2학년</button>
+        <button class="btn-col grade-btn" onclick="selectGrade(3)">3학년</button>
+        <button class="btn-col grade-btn" onclick="selectGrade(4)">4학년</button>
+        <button class="btn-col grade-btn" onclick="selectGrade(5)">5학년</button>
+        <button class="btn-col grade-btn" onclick="selectGrade(6)">6학년</button>
+      </div>
+    </div>
+
+    <!-- [4] 성별 선택 -->
+    <div class="step" id="step-4">
       <div class="question-title">자녀의 성별을 선택해 주세요.</div>
       <div class="btn-group-row">
         <button class="btn-large gender-btn" onclick="selectGender('남')">남자</button>
@@ -311,14 +325,14 @@
       </div>
     </div>
 
-    <!-- [4] 이름 -->
-    <div class="step" id="step-4">
+    <!-- [5] 이름 -->
+    <div class="step" id="step-5">
       <div class="question-title">자녀의 이름을 입력해 주세요.</div>
       <input type="text" id="child-name" placeholder="예: 홍길동" autocomplete="off">
     </div>
 
-    <!-- [5] 주민등록번호 -->
-    <div class="step" id="step-5">
+    <!-- [6] 주민등록번호 -->
+    <div class="step" id="step-6">
       <div class="question-title">자녀의 주민등록번호를 입력해 주세요.</div>
       <div class="rrn-group">
         <input type="tel" id="rrn-1" maxlength="6" placeholder="앞 6자리" style="width: 48%;" autocomplete="off">
@@ -327,8 +341,8 @@
       </div>
     </div>
 
-    <!-- [6] 주소 -->
-    <div class="step" id="step-6">
+    <!-- [7] 주소 -->
+    <div class="step" id="step-7">
       <div class="question-title">거주지 주소를 입력해 주세요.</div>
       <div class="address-box">
         <button class="btn-search" onclick="execDaumPostcode()">주소 검색하기</button>
@@ -340,20 +354,20 @@
       </div>
     </div>
 
-    <!-- [7] 보호자 성명 -->
-    <div class="step" id="step-7">
+    <!-- [8] 보호자 성명 -->
+    <div class="step" id="step-8">
       <div class="question-title">연락을 받으실 보호자의 이름을 입력해 주세요.</div>
       <input type="text" id="parent-name" placeholder="예: 홍판서" autocomplete="off">
     </div>
 
-    <!-- [8] 보호자 연락처 -->
-    <div class="step" id="step-8">
+    <!-- [9] 보호자 연락처 -->
+    <div class="step" id="step-9">
       <div class="question-title">연락을 받으실 보호자 연락처를 입력해 주세요.</div>
       <input type="tel" id="parent-phone" maxlength="13" placeholder="010-0000-0000" oninput="autoHyphen(this)" autocomplete="off">
     </div>
 
-    <!-- [9] 추첨 참석 여부 -->
-    <div class="step" id="step-9">
+    <!-- [10] 추첨 참석 여부 -->
+    <div class="step" id="step-10">
       <div class="question-title">추첨일 참석 여부를 선택해 주세요.</div>
       <div style="background: #f0f4f8; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 16px; color: #444; line-height: 1.6; text-align: left; word-break: keep-all;">
         <strong style="font-size: 18px; color: #2c3e50;">[추첨 안내]</strong><br>
@@ -366,12 +380,13 @@
       </div>
     </div>
 
-    <!-- [10] 요약 및 동의 -->
-    <div class="step" id="step-10">
+    <!-- [11] 요약 및 동의 -->
+    <div class="step" id="step-11">
       <div class="question-title">입력하신 내용을 확인해 주세요.</div>
       <table class="summary-table">
         <tr><th>접수 번호</th><td id="sum-receipt" style="font-weight: bold; color: #777;"></td></tr>
         <tr><th>지원 구분</th><td id="sum-type"></td></tr>
+        <tr id="sum-category-row"><th>지원 전형</th><td id="sum-category" style="font-weight: bold;"></td></tr>
         <tr><th>자녀 성별</th><td id="sum-gender"></td></tr>
         <tr><th>자녀 성명</th><td id="sum-child-name"></td></tr>
         <tr><th>주민번호</th><td id="sum-rrn"></td></tr>
@@ -393,19 +408,18 @@
       </label>
     </div>
 
-    <!-- [11] 완료 및 접수증 캡처 -->
-    <div class="step" id="step-11">
+    <!-- [12] 완료 및 접수증 캡처 -->
+    <div class="step" id="step-12">
       <div style="text-align: center;">
         
-        <!-- 실물과 동일한 접수표 캡처 영역 -->
         <div id="receipt-capture-area" style="background:#ffffff; padding: 30px 20px; border: 2px solid #333; margin-bottom: 15px; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto;">
           <h2 style="font-size: 32px; color: #333; margin-bottom: 25px; letter-spacing: 10px; font-weight: bold;">접수표</h2>
-          <p style="font-size: 20px; color: #333; margin-bottom: 25px;" id="receipt-subtitle"></p>
+          <p style="font-size: 18px; color: #333; margin-bottom: 25px; font-weight: bold;" id="receipt-subtitle"></p>
           
           <table style="width: 100%; border-collapse: collapse; text-align: center; border: 1px solid #333; font-size: 18px; color: #333; margin-bottom: 25px;">
             <tr>
               <th style="border: 1px solid #333; padding: 15px; background: #f9f9f9; width: 35%;">※ 접수번호</th>
-              <td style="border: 1px solid #333; padding: 15px; font-weight: bold; font-size: 24px;" id="final-receipt"></td>
+              <td style="border: 1px solid #333; padding: 15px; font-weight: bold; font-size: 22px;" id="final-receipt"></td>
             </tr>
             <tr id="receipt-grade-row" style="display: none;">
               <th style="border: 1px solid #333; padding: 15px; background: #f9f9f9;">학년</th>
@@ -421,7 +435,6 @@
             </tr>
           </table>
 
-          <!-- 추첨 안내 박스 삽입 -->
           <div style="text-align: left; margin-bottom: 25px; font-size: 14px; color: #333; line-height: 1.6; padding: 12px; border: 1px solid #ccc; background-color: #f9f9f9;">
             <strong style="color: #2c3e50;">[추첨 안내]</strong><br>
             • 일시: 2026년 10월 30일(금) 14시<br>
@@ -433,7 +446,6 @@
         
         <p style="font-size: 16px; color: #e74c3c; font-weight: bold; margin-bottom: 15px;">※ 별도의 종이 접수표는 발급하지 않으니 반드시 사진으로 저장해 주세요.</p>
         
-        <!-- 중요 안내 사항 -->
         <div style="background: #fff3f3; border-left: 4px solid #e74c3c; padding: 15px; margin-bottom: 25px; text-align: left;">
           <p style="font-size: 18px; color: #c0392b; font-weight: bold; word-break: keep-all; line-height: 1.4;">
             ※ 필수 안내사항<br>
@@ -458,14 +470,15 @@
 </div>
 
 <script>
-  // 이곳에 새로 배포한 GAS Web App URL을 넣으세요.
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbz-rCx8kjFXUyDb1UKvcqznic8JVfv3H4ClXZ03QRM5FhUmp4s-VkkW_aK6nY4p4Te_/exec";
+  // 이곳에 새로 배포한 학교 계정의 GAS Web App URL을 넣으세요.
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbymuIu1ykv1m-kfkoo3bPsgf98TegkoQoW7Jx3HKe0Th4nIML8W4LtKWmPk7tKgO4-x/exec";
 
   let currentStep = 0;
-  const totalSteps = 10; 
+  const totalSteps = 11;
 
   const formData = {
     type: '',
+    category: '', 
     grade: 1,
     gender: '',
     childName: '',
@@ -487,7 +500,7 @@
     const progressContainer = document.getElementById('progress-container');
     const nextBtn = document.getElementById('btn-next-action');
 
-    if (currentStep === 0 || currentStep === 11) {
+    if (currentStep === 0 || currentStep === 12) {
       navBtns.style.display = 'none';
       progressContainer.style.display = 'none';
     } else {
@@ -497,7 +510,7 @@
       const percent = (currentStep / totalSteps) * 100;
       document.getElementById('progress-fill').style.width = percent + '%';
 
-      if (currentStep === 10) {
+      if (currentStep === 11) {
         nextBtn.innerText = '제출하기';
         nextBtn.style.background = '#27ae60';
         populateSummary();
@@ -509,8 +522,15 @@
   }
 
   function nextStep() {
-    if (currentStep === 1 && formData.type === '신입생') {
+    // 1단계에서 전입생을 선택하면 2단계(전형)를 건너뛰고 3단계(학년)로 이동
+    if (currentStep === 1 && formData.type === '전입생') {
       currentStep = 3; 
+      updateUI();
+      return;
+    }
+    // 2단계(전형)에서 신입생은 3단계(학년)를 건너뛰고 4단계(성별)로 이동
+    if (currentStep === 2 && formData.type === '신입생') {
+      currentStep = 4; 
       updateUI();
       return;
     }
@@ -521,11 +541,19 @@
   }
 
   function prevStep() {
-    if (currentStep === 3 && formData.type === '신입생') {
+    // 4단계(성별)에서 이전 클릭 시, 신입생이면 2단계(전형)로 복귀
+    if (currentStep === 4 && formData.type === '신입생') {
+      currentStep = 2; 
+      updateUI();
+      return;
+    }
+    // 3단계(학년)에서 이전 클릭 시, 전입생은 1단계(지원유형)로 복귀
+    if (currentStep === 3 && formData.type === '전입생') {
       currentStep = 1; 
       updateUI();
       return;
     }
+    
     if (currentStep > 1) {
       currentStep--;
       updateUI();
@@ -539,6 +567,13 @@
     formData.type = val;
     if (val === '신입생') formData.grade = 1;
     const btns = document.querySelectorAll('.type-btn');
+    btns.forEach(b => b.classList.toggle('selected', b.innerText.includes(val)));
+    setTimeout(() => nextStep(), 200);
+  }
+
+  function selectCategory(val) {
+    formData.category = val;
+    const btns = document.querySelectorAll('.category-btn');
     btns.forEach(b => b.classList.toggle('selected', b.innerText.includes(val)));
     setTimeout(() => nextStep(), 200);
   }
@@ -560,7 +595,7 @@
   function selectAttendance(val) {
     formData.attendance = val;
     const btns = document.querySelectorAll('.attend-btn');
-    btns.forEach(b => b.classList.toggle('selected', b.innerText === val));
+    btns.forEach(b => b.classList.toggle('selected', b.innerText.includes(val)));
     setTimeout(() => nextStep(), 200); 
   }
 
@@ -590,15 +625,16 @@
 
   function validateAndNext() {
     if (currentStep === 1 && !formData.type) { alert("입학 유형을 선택해 주세요."); return; }
-    if (currentStep === 2 && !formData.grade) { alert("전입할 학년을 선택해 주세요."); return; }
-    if (currentStep === 3 && !formData.gender) { alert("성별을 선택해 주세요."); return; }
+    if (currentStep === 2 && formData.type === '신입생' && !formData.category) { alert("지원 전형을 선택해 주세요."); return; }
+    if (currentStep === 3 && formData.type === '전입생' && !formData.grade) { alert("전입할 학년을 선택해 주세요."); return; }
+    if (currentStep === 4 && !formData.gender) { alert("성별을 선택해 주세요."); return; }
     
-    if (currentStep === 4) {
+    if (currentStep === 5) {
       const name = document.getElementById('child-name').value.trim();
       if (!name) { alert("자녀 이름을 입력해 주세요."); return; }
       formData.childName = name;
     }
-    if (currentStep === 5) {
+    if (currentStep === 6) {
       const r1 = document.getElementById('rrn-1').value.trim();
       const r2 = document.getElementById('rrn-2').value.trim();
       if (r1.length !== 6 || r2.length !== 7) {
@@ -607,27 +643,27 @@
       }
       formData.rrn = `${r1}-${r2}`;
     }
-    if (currentStep === 6) {
+    if (currentStep === 7) {
       const basic = document.getElementById('address-basic').value.trim();
       const detail = document.getElementById('address-detail').value.trim();
       if (!basic) { alert("주소 검색을 통해 기본 주소를 입력해 주세요."); return; }
       if (!detail) { alert("상세 주소를 입력해 주세요."); return; }
       formData.address = `${basic} ${detail}`.trim();
     }
-    if (currentStep === 7) {
+    if (currentStep === 8) {
       const pName = document.getElementById('parent-name').value.trim();
       if (!pName) { alert("보호자 이름을 입력해 주세요."); return; }
       formData.parentName = pName;
     }
-    if (currentStep === 8) {
+    if (currentStep === 9) {
       const pPhone = document.getElementById('parent-phone').value.trim();
       if (pPhone.length < 10) { alert("올바른 연락처를 입력해 주세요."); return; }
       formData.parentPhone = pPhone;
     }
-    if (currentStep === 9) {
+    if (currentStep === 10) {
       if (!formData.attendance) { alert("추첨일 참석 여부를 선택해 주세요."); return; }
     }
-    if (currentStep === 10) {
+    if (currentStep === 11) {
       if (!document.getElementById('privacy-agree').checked) {
         alert("개인정보 수집 및 이용에 동의하셔야 제출이 가능합니다.");
         return;
@@ -641,6 +677,15 @@
   function populateSummary() {
     document.getElementById('sum-receipt').innerText = "제출 완료 시 자동 발급"; 
     document.getElementById('sum-type').innerText = formData.type === '신입생' ? '신입생 (1학년)' : `전입생 (${formData.grade}학년)`;
+    
+    // 전입생은 요약 화면에서 전형(category) 행을 숨김
+    if (formData.type === '전입생') {
+      document.getElementById('sum-category-row').style.display = 'none';
+    } else {
+      document.getElementById('sum-category-row').style.display = 'table-row';
+      document.getElementById('sum-category').innerText = formData.category + ' 전형';
+    }
+    
     document.getElementById('sum-gender').innerText = formData.gender === '남' ? '남자' : '여자';
     document.getElementById('sum-child-name').innerText = formData.childName;
     document.getElementById('sum-rrn').innerText = formData.rrn;
@@ -665,7 +710,13 @@
       if(data.result === "success") {
         document.getElementById('final-receipt').innerText = data.receiptNo;
         
-        document.getElementById('receipt-subtitle').innerText = `2027학년도 ${formData.type}`;
+        // 접수표 타이틀: 신입생은 전형 표기, 전입생은 전형 표기 생략
+        if (formData.type === '신입생') {
+          document.getElementById('receipt-subtitle').innerText = `2027학년도 ${formData.type} (${formData.category})`;
+        } else {
+          document.getElementById('receipt-subtitle').innerText = `2027학년도 ${formData.type}`;
+        }
+        
         document.getElementById('receipt-name').innerText = formData.childName;
         
         if (formData.gender === '남') {
@@ -681,7 +732,7 @@
           document.getElementById('receipt-grade-row').style.display = 'none';
         }
 
-        currentStep = 11;
+        currentStep = 12;
         updateUI();
       } else {
         throw new Error(data.message || "서버 에러");
