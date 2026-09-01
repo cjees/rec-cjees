@@ -274,8 +274,7 @@
           <strong style="color: #c0392b; font-size: 18px;">[당첨취소에 대한 안내]</strong><br>
           (1) 원서접수 게시일(2026.10.6.) 현재 청주시에 주민등록이 되어 있지 않은 경우<br>
           (2) 원서 기재 사항이 사실과 다른 경우<br>
-          (3) 접수 번호를 달리하여 원서를 여러 번(중복 및 이중 지원) 접수한 경우<br>
-	  (4) 원서만 접수한 후 직접 서류를 제출하지 않은 경우
+          (3) 접수 번호를 달리하여 원서를 여러 번(중복 및 이중 지원) 접수한 경우
         </div>
 
         <p style="font-size: 18px; color: #666; margin-bottom: 20px;">아래 버튼을 눌러 입학 접수를 시작해 주세요.</p>
@@ -615,6 +614,7 @@
   function selectGrade(val) {
     formData.grade = val;
     const btns = document.querySelectorAll('.grade-btn');
+    // 중복 선택 꼬임 방지를 위해 정확한 학년 문구로 시작하는지 검사
     btns.forEach(b => b.classList.toggle('selected', b.innerText.startsWith(val + '학년')));
     setTimeout(() => nextStep(), 200);
   }
@@ -629,6 +629,7 @@
   function selectAttendance(val) {
     formData.attendance = val;
     const btns = document.querySelectorAll('.attend-btn');
+    // 완벽한 단어 일치를 위해 trim 적용
     btns.forEach(b => b.classList.toggle('selected', b.innerText.trim() === val));
     setTimeout(() => nextStep(), 200); 
   }
@@ -644,6 +645,7 @@
     wrap.style.display = 'none';
   }
 
+  // 주소 검색 API 연동 및 데이터 조합 로직 (하이브리드 방식)
   function execDaumPostcode() {
     wrap.style.display = 'block'; 
     new daum.Postcode({
@@ -652,13 +654,18 @@
         let extraAddress = '';
         
         let extraList = [];
-        if (data.bname !== '') {
-          extraList.push(data.bname);
+        // 1. 행정동(hname) 우선, 비어있다면 법정동(bname) 사용
+        let dongName = data.hname !== '' ? data.hname : data.bname;
+        if (dongName !== '') {
+          extraList.push(dongName);
         }
+        
+        // 2. 건물명/아파트명 추가
         if (data.buildingName !== '') {
           extraList.push(data.buildingName);
         }
         
+        // 3. 콤마로 연결 후 괄호로 묶어주기
         if (extraList.length > 0) {
           extraAddress = ' (' + extraList.join(', ') + ')';
         }
